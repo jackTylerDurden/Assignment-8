@@ -50,24 +50,51 @@ var deleteButtonActionListner = function(e) {
     e.currentTarget.removeEventListener("click",deleteButtonActionListner);
     updateEmployeeTable();  
 };
+var clearErrorMessages = function(){
+    $("nameValidationError").innerHTML= "";
+    $("titleValidationError").innerHTML= "";
+    $("extensionValidationError").innerHTML= "";
+}
 var bindAddButtonEvent = function () {
     $("employeeManagementForm").addEventListener("submit",function(e){        
         e.preventDefault();
+        clearErrorMessages();
         var empForm = window.document.forms[0];
         var newEmp = [];
-        newEmp.push(empForm.name.value);
-        newEmp.push(empForm.title.value);
-        newEmp.push(empForm.extension.value);
-        empInfo.push(newEmp);
-        empForm.reset();
-        updateEmployeeTable();        
+        var isFormValid = true;      
+        if(empForm.name.value){
+            newEmp.push(empForm.name.value);
+        }else{
+            var nameErrorMessage = window.document.createTextNode("Please enter name");
+            $("nameValidationError").appendChild(nameErrorMessage);
+            isFormValid = false;
+        }
+        if(empForm.title.value){
+            newEmp.push(empForm.title.value);
+        }else{
+            var titleErrorMessage = window.document.createTextNode("Please enter title");
+            $("titleValidationError").appendChild(titleErrorMessage);
+            isFormValid = false;
+        }
+
+        if(empForm.extension.value){
+            newEmp.push(empForm.extension.value);
+        }else{
+            var extensionErrorMessage = window.document.createTextNode("Please enter extension");
+            $("extensionValidationError").appendChild(extensionErrorMessage);
+            isFormValid = false;
+        }
+        if(isFormValid){            
+            empInfo.push(newEmp);
+            empForm.reset();
+            updateEmployeeTable();        
+        }        
     });
 }
 window.addEventListener("load", function (){
     "use strict";
     updateEmployeeTable();
     bindAddButtonEvent();
-
 });
 
 
