@@ -5,15 +5,29 @@ var $ = function (id) {
     "use strict";
     return window.document.getElementById(id);
 };
+var deleteButtonActionListner = function (e) {
+    "use strict";
+    var empIndexToRemove = (Number)(e.target.id.split("_")[1]);
+    empInfo.splice(empIndexToRemove,1);
+    e.currentTarget.removeEventListener("click",deleteButtonActionListner);
+    updateEmployeeTable();
+};
+
+var bindDeleteEvents = function () {
+    window.document.querySelectorAll(".deleteButtonClass").forEach(function (button) {
+        button.addEventListener("click",deleteButtonActionListner);
+    });
+};
+
 var updateEmployeeTable = function () {
     "use strict";
     var i,j;
     var empTable = window.document.querySelector("#employeeListTable tbody");
-    empTable.innerHTML="";
+    empTable.innerHTML = "";
     var empCount = empInfo.length;
     var empCountText = window.document.createTextNode("Showing " + empCount + " employees");
     var empInfoDiv = $("empInfo");
-    empInfoDiv.innerHTML="";
+    empInfoDiv.innerHTML = "";
     empInfoDiv.appendChild(empCountText);
     for (i = 0; i < empInfo.length; i += 1) {
         var row = window.document.createElement("tr");
@@ -35,20 +49,6 @@ var updateEmployeeTable = function () {
         empTable.appendChild(row);
     }
     bindDeleteEvents();
-};
-
-var deleteButtonActionListner = function (e) {
-    "use strict";
-    var empIndexToRemove = (Number)(e.target.id.split("_")[1]);
-    empInfo.splice(empIndexToRemove,1);
-    e.currentTarget.removeEventListener("click",deleteButtonActionListner);
-    updateEmployeeTable();
-};
-
-var bindDeleteEvents = function () {
-    window.document.querySelectorAll(".deleteButtonClass").forEach(function (button) {
-        button.addEventListener("click",deleteButtonActionListner);
-    });
 };
 
 var clearErrorMessages = function () {
