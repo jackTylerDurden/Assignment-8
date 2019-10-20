@@ -17,7 +17,7 @@ var updateEmployeeTable = function () {
     empInfoDiv.appendChild(empCountText);
     for (i = 0; i < empInfo.length; i += 1) {
         var row = window.document.createElement("tr");
-        var emp = empInfo[i];        
+        var emp = empInfo[i];
         for (j = 0; j < emp.length; j += 1) {
             var col = window.document.createElement("td");
             var info = window.document.createTextNode(emp[j]);
@@ -32,66 +32,69 @@ var updateEmployeeTable = function () {
         var delButtonCol = window.document.createElement("td");
         delButtonCol.appendChild(delButton);
         row.appendChild(delButtonCol);
-        empTable.appendChild(row);  
-        bindDeleteEvents();      
+        empTable.appendChild(row);
     }
+    bindDeleteEvents();
 };
 
-var bindDeleteEvents = function(){    
-    window.document.querySelectorAll(".deleteButtonClass").forEach(function (button) {
-        button.addEventListener("click",deleteButtonActionListner);
-    });
-}
-
-var deleteButtonActionListner = function(e) {
-    "use strict";     
+var deleteButtonActionListner = function (e) {
+    "use strict";
     var empIndexToRemove = (Number)(e.target.id.split("_")[1]);
     empInfo.splice(empIndexToRemove,1);
     e.currentTarget.removeEventListener("click",deleteButtonActionListner);
-    updateEmployeeTable();  
+    updateEmployeeTable();
 };
-var clearErrorMessages = function(){
-    $("nameValidationError").innerHTML= "";
-    $("titleValidationError").innerHTML= "";
-    $("extensionValidationError").innerHTML= "";
-}
+
+var bindDeleteEvents = function () {
+    window.document.querySelectorAll(".deleteButtonClass").forEach(function (button) {
+        button.addEventListener("click",deleteButtonActionListner);
+    });
+};
+
+var clearErrorMessages = function () {
+    "use strict";
+    $("nameValidationError").innerHTML = "";
+    $("titleValidationError").innerHTML = "";
+    $("extensionValidationError").innerHTML = "";
+};
 var bindAddButtonEvent = function () {
-    $("employeeManagementForm").addEventListener("submit",function(e){        
+    "use strict";
+    $("employeeManagementForm").addEventListener("submit", function (e) {
         e.preventDefault();
         clearErrorMessages();
         var empForm = window.document.forms[0];
         var newEmp = [];
         var isFormValid = true;      
-        if(empForm.name.value){
+        if (empForm.name.value) {
             newEmp.push(empForm.name.value);
-        }else{
+        } else {
             var nameErrorMessage = window.document.createTextNode("Please enter name");
             $("nameValidationError").appendChild(nameErrorMessage);
             isFormValid = false;
         }
-        if(empForm.title.value){
+        if (empForm.title.value) {
             newEmp.push(empForm.title.value);
-        }else{
+        } else {
             var titleErrorMessage = window.document.createTextNode("Please enter title");
             $("titleValidationError").appendChild(titleErrorMessage);
             isFormValid = false;
         }
 
-        if(empForm.extension.value){
+        if (empForm.extension.value) {
             newEmp.push(empForm.extension.value);
-        }else{
+        } else {
             var extensionErrorMessage = window.document.createTextNode("Please enter extension");
             $("extensionValidationError").appendChild(extensionErrorMessage);
             isFormValid = false;
         }
-        if(isFormValid){            
+        if (isFormValid) {            
             empInfo.push(newEmp);
             empForm.reset();
             updateEmployeeTable();        
         }        
     });
 }
-window.addEventListener("load", function (){
+window.addEventListener("load", function () {
     "use strict";
     updateEmployeeTable();
     bindAddButtonEvent();
